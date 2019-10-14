@@ -4,7 +4,7 @@
 
 **Why use 2's complement to represent negative numbers?**
 
-2's complement is used to represent negative numbers because additions and subtractions can be done with a single operation.
+2's complement is used to represent negative numbers because additions and subtractions can be done with the same operation.
 
 ###### Examples:
 ```
