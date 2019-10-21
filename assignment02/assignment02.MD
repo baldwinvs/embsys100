@@ -1,23 +1,19 @@
 # Assignment 02
 
-### 1. Inject 0x1FFFFFFF for the ***counter*** value in the variable window, then step thru the program only once to increment ***counter***.
+### 1. Inject 0x7FFFFFFF for the ***counter*** value in the variable window, then step thru the program only once to increment ***counter***.
 
 ##### a) What is the value of the *counter* from the *Locals* window?
 
-536870912
+-2147483648
 
 ##### b) What is the value of the *counter* in the *Register* window?
 
-0x20000000
+0x80000000
 
-##### c) Which flags are set in the APSR register? Explain why.
+##### c) Please note if the N and/or V flags are set in the APSR register? Explain why.
 
-None:
-- **[N]**: The resulting operation did not yield a negative value.
-- **[Z]**: The resulting operation did not yield zero.
-- **[C]**: No carry operations occurred.
-- **[V]**: No overflow occurred.
-- **[Q]**: As far as I know, saturation arithmetic isn't being used.
+- **[N]**: *SET* - The resulting value is negative.
+- **[V]**: *SET* - The maximum signed integer is 0x7FFFFFFF because of 2's complement; adding 1 to counter yielded 0x80000000 which is the minimum signed integer value in 2's complement.
 
 ### 2. If you write all Fs (0xFFFFFFFF) in the Register value for ***counter*** then step step thru the program once to increment ***counter***:
 
@@ -25,24 +21,22 @@ None:
 
 It becomes zero.
 
-##### b) What flags, if any, are set in the APSR?
+##### b) Please note if the N and/or V flags are set in the APSR register? Explain why.
 
-The <b>[Z]</b>ero and <b>[C]</b>arry flags.
+- **[N]**: *NOT SET* - The resulting value is not negative.
+- **[V]**: *NOT SET* - There was no signed integer overflow; the counter began at -1 and incremented to 0.
 
-### 3. Change the ***counter*** variable type in your code to **unsigned**. Inject the value **0x1FFFFFFF** then step thru the program to increment the ***counter*** once:
+### 3. Change the ***counter*** variable type in your code to **unsigned**. Inject the value **0x7FFFFFFF** then step thru the program to increment the ***counter*** once:
 
 ##### a) What is the value of *counter* in the *Locals* window after incrementing for each value?
 
-536870912
+2147483648
 
-##### b) What flags, if any, are set in the APSR? Explain why.
+##### b) Please note if the N and/or V flags are set in the APSR register? Explain why.
 
 None:
-- **[N]**: The resulting operation did not yield a negative value.
-- **[Z]**: The resulting operation did not yield zero.
-- **[C]**: No carry operations occurred.
-- **[V]**: No overflow occurred.
-- **[Q]**: As far as I know, saturation arithmetic isn't being used.
+- **[N]**: *SET* - The resulting operation did not yield a negative value, but the most significant bit in counter is set which causes this flag to be set.
+- **[V]**: *SET* - No overflow occurred in the unsigned value but in terms of a signed value, an overflow did occur.
 
 ### 4. Change the ***counter*** variable type in your code to **unsigned**. Inject the value **0xFFFFFFFF** then step thru the program to increment the ***counter*** once:
 
@@ -52,8 +46,8 @@ None:
 
 ##### b) What flags, if any, are set in the APSR? Explain why.
 
-- **[Z]** is set because the resulting value is 0.
-- **[C]** is set because the resulting value of the addition is greater than or equal to 2^32.
+- **[N]**: *NOT SET* - The resulting value is not negative.
+- **[V]**: *NOT SET* - There was no signed integer overflow; the counter began at UINT_MAX and incremented (rolled over) to 0.
 
 ### 5. Move the ***counter*** variable outside of main (at the top of the file):
 
