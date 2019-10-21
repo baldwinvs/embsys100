@@ -13,7 +13,7 @@
 ##### c) Please note if the N and/or V flags are set in the APSR register? Explain why.
 
 - **[N]**: *SET* - The resulting value is negative.
-- **[V]**: *SET* - The maximum signed integer is 0x7FFFFFFF because of 2's complement; adding 1 to counter yielded 0x80000000 which is the minimum signed integer value in 2's complement.
+- **[V]**: *SET* - The maximum signed integer is 0x7FFFFFFF because of 2's complement; adding 1 to counter yielded 0x80000000 which is the minimum signed integer value in 2's complement. Going from one value to the other will result in this flag being set.
 
 ### 2. If you write all Fs (0xFFFFFFFF) in the Register value for ***counter*** then step step thru the program once to increment ***counter***:
 
@@ -34,13 +34,12 @@ It becomes zero.
 
 ##### b) Please note if the N and/or V flags are set in the APSR register? Explain why.
 
-None:
 - **[N]**: *SET* - The resulting operation did not yield a negative value, but the most significant bit in counter is set which causes this flag to be set.
 - **[V]**: *SET* - No overflow occurred in the unsigned value but in terms of a signed value, an overflow did occur.
 
 ### 4. Change the ***counter*** variable type in your code to **unsigned**. Inject the value **0xFFFFFFFF** then step thru the program to increment the ***counter*** once:
 
-##### a) What is the value of *counter* in the "Locals" window after incrementing for each value?
+##### a) What is the value of *counter* in the *Locals* window after incrementing for each value?
 
 0
 
@@ -75,10 +74,7 @@ The **Watch** view.
 
 ##### b) Explain why the counter value has changed.
 
-***counter*** is residing at the beginning of the SRAM (0x20000000) according to the **Watch** view.
-***p_int*** is then pointing to the same memory location as ***counter***. Then the pre-increment
-operator is being applied to the dereferenced value of ***p_int***, which is counter, 3 times followed
-by a single post-increment of ***counter***; resulting in the final value of **4**.
+***counter*** is residing at the beginning of the SRAM (0x20000000) according to the **Watch** view. ***p_int*** is then pointing to the same memory location as ***counter***. The pre-increment operator is applied to the dereferenced value of ***p_int*** (which is ***counter***) 3 times followed by a single post-increment of ***counter***; resulting in the final value of **4**.
 
 ### 7. Change the setting of IAR to run the same program on the **evaluation board**.
 
