@@ -1,3 +1,16 @@
 *.pdf
-*Debug
+*Debug*
+*Obj*
 *.dbgdt
+*.dep
+*.ewd
+*.ewp
+*.ewt
+*.mxproject
+*Drivers*
+*EWARM*
+*Inc*
+*Src
+*.ioc
+*settings*
+*.eww
