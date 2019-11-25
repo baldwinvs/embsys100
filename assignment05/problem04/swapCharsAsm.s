@@ -55,8 +55,8 @@ swapCharsAsm
     LDRB R4, [R2]   ; load [R2] into R4, R4 == y
     CMP R3, R4      ; compare R3 to R4, modifies APSR
     BEQ finish      ; branch to finish label if Z == 1
-    STRB R4, [R1]   ; store R3 into [R0]
-    STRB R3, [R2]   ; store R2 into [R1]
+    STRB R4, [R1]   ; store R4 (y) into [R1] (&x)
+    STRB R3, [R2]   ; store R3 (x) into [R2] (&y)
     MOVS R0, #1     ; set the return value to 1
     B finish        ; branch to finish
 finish:             ; local label for restoring R4 and setting the return value to 0
