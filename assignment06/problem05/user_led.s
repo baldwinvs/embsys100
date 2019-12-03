@@ -1,7 +1,7 @@
 /*******************************************************************************
 File name       : user_led.s
 Description     : Assembly language function for controlling the user LED
-*******************************************************************************/   
+*******************************************************************************/
 
     EXTERN delay  // delay() is defined outside this file.
 
@@ -14,7 +14,7 @@ Description     : Assembly language function for controlling the user LED
 //      The bss section is used for declaring variables. The syntax for declaring bss section is -
 //      The text section is used for keeping the actual code.
 
-// CODE: Interprets subsequent instructions as Arm or Thumb instructions, 
+// CODE: Interprets subsequent instructions as Arm or Thumb instructions,
 // depending on the setting of related assembler options.
 
 // NOREORDER (the default mode) starts a new fragment in the section
@@ -28,14 +28,14 @@ Description     : Assembly language function for controlling the user LED
 
 // The (2) is for the (align)
 // The power of two to which the address should be aligned.
-// The permitted range is 0 to 8. 
+// The permitted range is 0 to 8.
 // Code aligned at 4 Bytes.
 
     SECTION .text:CODE:REORDER:NOROOT(2)
-    
+
     THUMB               // Indicates THUMB code is used
                         // Subsequent instructions are assembled as THUMB instructions
-    
+
 /*******************************************************************************
 Function Name   : control_user_led
 Description     : - Uses Peripheral registers at base 0x4000.0000
@@ -48,14 +48,36 @@ C Prototype     : void control_user_led(uint8_t state, uint32_t duration)
 Parameters      : R0: uint8_t state
                 : R1: uint32_t duration
 Return value    : None
-*******************************************************************************/  
+*******************************************************************************/
+
+; The bit-band address is defined as:
+; bit_word_addr = bit_band_base + (byte_offset x 32) + (bit_number x 4)
+
+GPIOA_BASE EQU 0x40020000           ; constant for the GPIOA base address in SRAM
+GPIOA_ODR EQU 0x14                  ; constant for the GPIOA_ODR offset from the GPIOA base address
+GPIOA_ODR_PA5 EQU 0x5               ; bit number for LD2 for the GPIOA_ODR
+
+PERIPH_ALIAS_BASE EQU 0x40000000    ; the peripheral bit-band alias base address
+PERIPH_BIT_BAND_BASE EQU 0x42000000 ; the peripheral bit-band region base address
 
 control_user_led
-    // <TODO: Add your code for the function here>
-
-    PUSH {LR}       // Save the input arguments as needed and LR
-    BL delay
-    POP {LR}        // Restore Risgters and LR
-    BX LR           // Return
-
+    PUSH {R4-R7, LR}                ; push necessary registers before modifying them
+    LDR R4, =PERIPH_BIT_BAND_BASE   ; load PERIPH_BIT_BAND_BASE
+    LDR R5, =GPIOA_BASE             ; load GPIOA_BASE
+    LDR R6, =PERIPH_ALIAS_BASE      ; load PERIPH_ALIAS_BASE
+    SUB R7, R5, R6                  ; calculate the byte offset
+    LDR R6, =GPIOA_ODR              ; load the GPIOA ODR offset
+    ADD R7, R7, R6                  ; add the GPIOA_ODR byte offset
+    MOV R5, #32                     ; set R5 to the byte offset multiplier
+    MUL R7, R7, R5                  ; calculate byte offset x 32
+    LDR R6, =GPIOA_ODR_PA5          ; load GPIOA_ODR_PA5
+    MOV R5, #4                      ; set R5 to the bit number multiplier
+    MUL R6, R6, R5                  ; calculate bit number x 4
+    ADD R7, R7, R6                  ; add the 2 calculations together to get the bit_word_offset
+    ADD R4, R4, R7                  ; add the bit_word_offset to the bit_band_base to get the bit_word_addr
+    STR R0, [R4]                    ; write to the bit_word_addr
+    MOV R0, R1                      ; move the duration input R1 to R0 for the input of delay()
+    BL delay                        ; branch to delay(), modifies LR
+    POP {R4-R7, LR}                 ; pop registers
+    BX LR                           ; branch back to the calling function
     END

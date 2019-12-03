@@ -38,25 +38,27 @@ c. It is ok to use a hard code value of the ODR (Output Data Register) address f
 
 ### 3. Generate the map file for your program and provide details on:
 
-##### a. How much total ROM your program is occupying?
+> [map file](problem03/problem02.map)
 
-//stuff
+##### a. How much total ROM is your program occupying?
 
-##### b. How much total RAM your program is using?
+252 bytes
 
-//stuff
+##### b. How much total RAM is your program using?
+
+8192 bytes
 
 ##### c. What part of your program is using the most ROM?
 
-//stuff
+Out of all objects in ROM: the <b>vector_table_M.o</b> object at 64 bytes.
 
 ##### d. What part of your program is using the most RAM?
 
-//stuff
+The <b>CSTACK</b>.
 
 ### 4. BONUS: Anything that can be done to optimize the usage of ROM or RAM resources? Explain any options.
 
-//stuff
+<b><i>N/A</i></b>
 
 ### 5. BONUS: Re-implement the control_user_led to use the bit-band region for accessing the Output Data Register (ODR) for GPIOA in order to toggle the LED ON/OFF.
 <pre>

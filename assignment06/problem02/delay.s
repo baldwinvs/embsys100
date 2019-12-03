@@ -1,7 +1,7 @@
 /*******************************************************************************
 File name       : delay.s
 Description     : Assembly language function for controlling the user LED
-*******************************************************************************/   
+*******************************************************************************/
 
     PUBLIC delay         // Exports symbols to other modules
 
@@ -12,7 +12,7 @@ Description     : Assembly language function for controlling the user LED
 //      The bss section is used for declaring variables. The syntax for declaring bss section is -
 //      The text section is used for keeping the actual code.
 
-// CODE: Interprets subsequent instructions as Arm or Thumb instructions, 
+// CODE: Interprets subsequent instructions as Arm or Thumb instructions,
 // depending on the setting of related assembler options.
 
 // NOREORDER (the default mode) starts a new fragment in the section
@@ -26,14 +26,14 @@ Description     : Assembly language function for controlling the user LED
 
 // The (2) is for the (align)
 // The power of two to which the address should be aligned.
-// The permitted range is 0 to 8. 
+// The permitted range is 0 to 8.
 // Code aligned at 4 Bytes.
 
     SECTION .text:CODE:REORDER:NOROOT(2)
-    
+
     THUMB               // Indicates THUMB code is used
                         // Subsequent instructions are assembled as THUMB instructions
-    
+
 /*******************************************************************************
 Function Name   : delay
 Description     : loops until input value reaches 0, then exits
@@ -42,9 +42,14 @@ C Prototype     : void delay(uint8_t duration)
                 : Where duration indicates the total number of loops.
 Parameters      : R0: uint8_t duration
 Return value    : None
-*******************************************************************************/  
-  
+*******************************************************************************/
+
 delay
-    // <TODO: Add your code for the function here>
-    BX LR               // return    
+loop:
+    CMP R0, #0      ; compare the remaining duration to 0
+    BEQ finish      ; branch to the finish tag if duration has reached 0
+    SUB R0, R0, #1  ; subtract 1 from the duration
+    B loop          ; start the loop over
+finish:
+    BX LR           ; branch back to the calling function
     END

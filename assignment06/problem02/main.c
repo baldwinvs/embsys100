@@ -14,18 +14,18 @@
 #define LED_OFF 0
 #define DELAY_DURATION 1000000
 
-void delay(uint32_t iteration);
-void control_user_led(uint8_t state, uint32_t duration);
+extern void delay(uint32_t iteration);
+extern void control_user_led(uint8_t state, uint32_t duration);
 
 void main(void)
-{    
+{
     // RCC Base Address: 0x40023800
     // RCC AHB1 peripheral clock enable register (RCC_AHB1ENR)
     // Address offset: 0x30
     // Set bit[0] to 1
     // 1. Enable clock to Peripheral
     RCC_AHB1ENR |= 0x1;
-  
+
     // GPIOA Base Address: 0x40020000
     // GPIO port mode register (GPIOx_MODER) (x = A..E and H)
     // Address offset: 0x00
@@ -37,7 +37,7 @@ void main(void)
     // Address offset: 0x14
     // Set bit[5] to 1 --> 0x20; // Turn LED ON
     // Set bit[5] to 0 --> 0x00; // Turn LED OFF
-     
+
     while(1)
     {
         control_user_led(LED_ON, DELAY_DURATION);
