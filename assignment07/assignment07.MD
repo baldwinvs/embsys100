@@ -17,9 +17,11 @@
 >  - [register](problem01/register.png)
 
 <b>Explanation of stack values:</b>
-The values in the stack correspond to an exception frame with floating-point storage.
+The values in the stack correspond to an exception frame with floating-point storage (as seen in Figure 2-3 from &sect;2.3.7).
 
 ![exc_stack_frame](../images/exc_stack_frame.png)
+
+The 2 remaining values (1 is out of frame) correspond to the registers, R4 and LR, pushed at the start of <b>main()</b>.
 
 <b>Explanation of the LR value:</b>
 The ARM Cortex-MR Generic User Guide &sect;2.3.7 states
